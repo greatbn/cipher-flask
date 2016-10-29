@@ -105,6 +105,70 @@ def encrypt(method_id):
                     'cipher_text': vi._encrypt()
                 }
                 return jsonify({'result': result})
+@app.route("/v1.0/decrypt/<int:method_id>", methods=['POST'])
+def encrypt(method_id):
+    method = [method for method in methods if method['id'] == method_id ]
+    print request.json
+    if len(method):
+        if method_id == 1:
+            if not 'a' in request.json or not 'b' in request.json or not 'cipher_text' in request.json:
+                abort(400)
+            else:
+                from ciphers import affine
+                aff = affine.AffineCipher(a=request.json['a'],
+                                          b=request.json['b'],
+                                          text=request.json['cipher_text'])
+                result ={
+                    'method': method[0]['name'],
+                    'a': request.json['a'],
+                    'b': request.json['b'],
+                    'cipher_text': request.json['cipher_text'],
+                    'plain_text': aff._decrypt()
+                }
+                return jsonify({'result': result})
+        elif method_id == 2:
+            if not 'moduloNumber' in request.json or not 'inverseNumber' in request.json:
+                abort(400)
+            else:
+                from ciphers import inverse
+                inv = inverse.InverseCalculate(moduloNumber=request.json['moduloNumber'],
+                                               inverseNumber=request.json['inverseNumber'])
+                result = {
+                    'method': method[0]['name'],
+                    'moduloNumber': request.json['moduloNumber'],
+                    'inverseNumber': request.json['inverseNumber'],
+                    'result': inv._inverse()
+                }
+                return jsonify({'result': result})
+        elif method_id == 3:
+            if not 'key' in request.json or not 'cipher_text' in request.json:
+                abort(400)
+            else:
+                from ciphers import caesar
+                ca = caesar.CaesarCipher(k=request.json['key'],
+                                         text=request.json['cipher_text'])
+
+                result = {
+                    'method': method[0]['name'],
+                    'key': request.json['key'],
+                    'cipher_text': request.json['cipher_text'],
+                    'plain_text': ca._decrypt()
+                }
+                return jsonify({'result': result})
+        elif method_id == 4:
+            if not 'key' in request.json or not 'cipher_text' in request.json:
+                abort(400)
+            else:
+                from ciphers import vigenere
+                vi = vigenere.VigenereCipher(key=request.json['key'],
+                                             text=request.json['cipher_text'])
+                result = {
+                    'method': method[0]['name'],
+                    'key': request.json['key'],
+                    'cipher_text': request.json['cipher_text'],
+                    'plain_text': vi._encrypt()
+                }
+                return jsonify({'result': result})
 
 @app.route("/")
 def index():
