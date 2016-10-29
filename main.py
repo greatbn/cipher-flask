@@ -1,7 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify, abort, make_response
 from flask_bootstrap import Bootstrap
-from ciphers import affine, caesar, gcd, inverse, vigenere
-
 app = Flask(__name__)
 Bootstrap(app)
 methods = [
@@ -29,7 +27,9 @@ methods = [
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error':'Not Found'}))
-
+@app.errorhandler(400)
+def error_in_data(error):
+    return make_response(jsonify({'error':'Your data not true'}))
 @app.route("/v1.0/methods", methods=['GET'])
 def get_methods():
     return jsonify({'methods': methods})
