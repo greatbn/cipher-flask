@@ -1,15 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="input-group input-group-sm">
-  <span class="input-group-addon" id="sizing-addon3">a</span>
-  <input type="text" class="form-control" placeholder="A" aria-describedby="sizing-addon3">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon" id="sizing-addon3">b</span>
-  <input type="text" class="form-control" placeholder="B" aria-describedby="sizing-addon3">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon" id="sizing-addon3">Strings</span>
-  <input type="text" class="form-control" placeholder="Strings" aria-describedby="sizing-addon3">
-</div>
+  <form name="affineForm ">
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">a</span>
+      <input type="text" class="form-control" placeholder="A" aria-describedby="sizing-addon3" id="a">
+    </div>
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">b</span>
+      <input type="text" class="form-control" placeholder="B" aria-describedby="sizing-addon3" id="b">
+    </div>
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">Strings</span>
+      <input type="text" class="form-control" placeholder="Strings" aria-describedby="sizing-addon3" id="strings">
+    </div>
+
+
+
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">Result</span>
+      <input type="text" class="form-control" placeholder="Strings" aria-describedby="sizing-addon3" id="result">
+    </div>
+
+  </form>
+  <div>
+    <button  onclick="affineEncrypt()" value="Encrypt">Encrypt</button>
+    <button  onclick="affineDecrypt()" value="Decrypt">Decrypt</button>
+  </div>
+  <script language="javascript" type="text/javascript">
+    function affineEncrypt(){
+      var a =parseInt($('#a').val());
+      var b =parseInt($('#b').val());
+      var plain_text = $('#strings').val();
+      $.ajax({
+        url:"/v1.0/encrypt/1",
+        type:"POST",
+        data:JSON.stringify({ a: a, b: b, plain_text : plain_text}),
+        contentType:"application/json",
+        dataType:"json",
+        success: function(data){
+          console.log(JSON.stringify(data));
+          $("#result").val(data['result']['cipher_text']);
+
+
+        }
+    });
+  };
+    function affineDecrypt(){
+      var a = parseInt($("#a").val());
+      var b = parseInt($("#b").val());
+      var cipher_text = $("#strings").val();
+      $.ajax({
+        url:"/v1.0/decrypt/1",
+        type:"POST",
+        data: JSON.stringify({a: a, b: b, cipher_text: cipher_text }),
+        contentType: "application/json",
+        dataType:"json",
+        success: function(data){
+          console.log(JSON.stringify(data));
+          $("#result").val(data['result']['plain_text']);
+        }
+      });
+    };
+  </script>
+
+
+
+
 {% endblock %}

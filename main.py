@@ -44,7 +44,6 @@ def get_method(method_id):
 @app.route("/v1.0/encrypt/<int:method_id>", methods=['POST'])
 def encrypt(method_id):
     method = [method for method in methods if method['id'] == method_id ]
-    print request.json
     if len(method):
         if method_id == 1:
             if not 'a' in request.json or not 'b' in request.json or not 'plain_text' in request.json:
@@ -61,6 +60,7 @@ def encrypt(method_id):
                     'plain_text': request.json['plain_text'],
                     'cipher_text': aff._encrypt()
                 }
+                print result
                 return jsonify({'result': result})
         elif method_id == 2:
             if not 'moduloNumber' in request.json or not 'inverseNumber' in request.json:
@@ -106,9 +106,8 @@ def encrypt(method_id):
                 }
                 return jsonify({'result': result})
 @app.route("/v1.0/decrypt/<int:method_id>", methods=['POST'])
-def encrypt(method_id):
+def decrypt(method_id):
     method = [method for method in methods if method['id'] == method_id ]
-    print request.json
     if len(method):
         if method_id == 1:
             if not 'a' in request.json or not 'b' in request.json or not 'cipher_text' in request.json:
