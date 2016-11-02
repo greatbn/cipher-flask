@@ -1,3 +1,4 @@
+#coding: utf-8
 from flask import Flask, render_template, redirect, url_for, request, jsonify, abort, make_response
 from flask_bootstrap import Bootstrap
 app = Flask(__name__)
@@ -132,11 +133,14 @@ def decrypt(method_id):
                 from ciphers import inverse
                 inv = inverse.InverseCalculate(moduloNumber=request.json['moduloNumber'],
                                                inverseNumber=request.json['inverseNumber'])
+                result_inv = inv._inverse()
+                if result_inv is False:
+                    result_inv = 'Nhập chưa đúng'
                 result = {
                     'method': method[0]['name'],
                     'moduloNumber': request.json['moduloNumber'],
                     'inverseNumber': request.json['inverseNumber'],
-                    'result': inv._inverse()
+                    'result': result_inv
                 }
                 return jsonify({'result': result})
         elif method_id == 3:
@@ -176,5 +180,8 @@ def index():
 def affine():
     if request.method == "GET":
         return render_template("affine.html")
+@app.route("/inverse")
+def inverse():
+    return render_template("inverse.html")
 if __name__ == '__main__':
     app.run(debug=True)

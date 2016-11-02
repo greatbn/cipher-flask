@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Số nghịch đảo</span>
+  <input type="text" class="form-control" placeholder="Số nghịch đảo" aria-describedby="sizing-addon3" id="inverseNumber">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Modulo</span>
+  <input type="text" class="form-control" placeholder="Modulo" aria-describedby="sizing-addon3" id="moduloNumber">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Kết quả</span>
+  <input type="text" class="form-control" placeholder="Kết quả" aria-describedby="sizing-addon3" id="result">
+</div>
+<div>
+  <button onclick="inverseCalculate()" >Calculate</button>
+</div>
+<script>
+  function inverseCalculate(){
+    var inverseNumber = parseInt($("#inverseNumber").val());
+    var moduloNumber = parseInt($("#moduloNumber").val());
+    $.ajax({
+      url: "/v1.0/decrypt/2",
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data: JSON.stringify({inverseNumber: inverseNumber, moduloNumber: moduloNumber}),
+      success: function(data){
+        console.log(JSON.stringify(data));
+        $("#result").val(data['result']['result']);
+      }
+    });
+  }
+</script>
+{% endblock %}

@@ -15,20 +15,22 @@ class InverseCalculate(object):
                 self.inverseNumber = self.inverseNumber % self.moduloNumber
             c = self.moduloNumber
             f = self.inverseNumber
-
-            while(True):
-                tempd = d
-                tempe = e
-                tempf = f
-                z = c/f
-                f = c%f
-                d = a - d*z
-                e = b - e*z
-                a = tempd
-                b = tempe
-                c = tempf
-                if f == 1:
-                    return e
+            try:
+                while(True):
+                    tempd = d
+                    tempe = e
+                    tempf = f
+                    z = c/f
+                    f = c%f
+                    d = a - d*z
+                    e = b - e*z
+                    a = tempd
+                    b = tempe
+                    c = tempf
+                    if f == 1:
+                        return e
+            except:
+                return False
             return False
         else:
             return False
