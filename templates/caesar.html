@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Dữ liệu nhập vào</span>
+  <input type="text" class="form-control" placeholder="Nhập vào" aria-describedby="sizing-addon3" id="input">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Khoá</span>
+  <select class="form-control" id="key">
+    {% for i in range(1,27) %}
+    <option>{{ i }}</option>
+    {% endfor %}
+  </select>
+</div>
+<div>
+  <button onclick="encryptCaesar()">Encrypt</button>
+  <button onclick="decryptCaesar()">Decrypt</button>
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Kết quả</span>
+  <input type="text" class="form-control" placeholder="Kết quả" aria-describedby="sizing-addon3" id="result">
+</div>
+<script>
+  function encryptCaesar(){
+    var plain_text = $("#input").val();
+    var key = parseInt($("#key").val());
+    $.ajax({
+      url: "/v1.0/encrypt/3",
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data: JSON.stringify({plain_text: plain_text, key: key}),
+      success: function(data){
+        console.log(JSON.stringify(data));
+        $("#result").val(data['result']['cipher_text']);
+      }
+    });
+  }
+  function decryptCaesar(){
+    var cipher_text = $("#input").val();
+    var key = parseInt($("#key").val());
+    $.ajax({
+      url: "/v1.0/decrypt/3",
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data: JSON.stringify({cipher_text: cipher_text, key: key}),
+      success: function(data){
+        console.log(JSON.stringify(data));
+        $("#result").val(data['result']['plain_text']);
+      }
+    });
+  }
+</script>
+{% endblock %}

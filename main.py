@@ -183,5 +183,8 @@ def affine():
 @app.route("/inverse")
 def inverse():
     return render_template("inverse.html")
+@app.route("/caesar")
+def caesar():
+    return render_template("caesar.html")
 if __name__ == '__main__':
     app.run(debug=True)
