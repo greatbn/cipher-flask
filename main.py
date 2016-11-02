@@ -169,7 +169,7 @@ def decrypt(method_id):
                     'method': method[0]['name'],
                     'key': request.json['key'],
                     'cipher_text': request.json['cipher_text'],
-                    'plain_text': vi._encrypt()
+                    'plain_text': vi._decrypt()
                 }
                 return jsonify({'result': result})
 
@@ -186,5 +186,8 @@ def inverse():
 @app.route("/caesar")
 def caesar():
     return render_template("caesar.html")
+@app.route("/vigenere")
+def vigenere():
+    return render_template("vigenere.html")
 if __name__ == '__main__':
     app.run(debug=True)
