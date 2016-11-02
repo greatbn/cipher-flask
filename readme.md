@@ -1,5 +1,7 @@
 ### Cipher Flask
 
+<img src="http://i.imgur.com/tysMRt7.png">
+
 #### description
 Một ứng dụng nho nhỏ viết bằng Flask bao gồm RestAPI và Frontend (dự định sẽ sử dụng AJAX)
 Tổng hợp các mật mã được học trên lớp (KMA) qua môn cơ sở ATTT
