@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Cơ số</span>
+  <input type="text" class="form-control" placeholder="Cơ số" aria-describedby="sizing-addon3" id="number">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Số mũ</span>
+  <input type="text" class="form-control" placeholder="Số mũ" aria-describedby="sizing-addon3" id="powerNumber">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Modulo</span>
+  <input type="text" class="form-control" placeholder="Modulo" aria-describedby="sizing-addon3" id="moduloNumber">
+</div>
+<div>
+  <button onclick="powerCalculate()" >Calculate</button>
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon" id="sizing-addon3">Kết quả</span>
+  <input type="text" class="form-control" placeholder="Kết quả" aria-describedby="sizing-addon3" id="result">
+</div>
+<script>
+  function powerCalculate(){
+    var number = parseInt($("#number").val());
+    var powerNumber = parseInt($("#powerNumber").val());
+    var moduloNumber = parseInt($("#moduloNumber").val());
+    $.ajax({
+      url: "/v1.0/decrypt/5",
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data: JSON.stringify({number: number, powerNumber: powerNumber, moduloNumber: moduloNumber}),
+      success: function(data){
+        console.log(JSON.stringify(data));
+        $("#result").val(data['result']['result']);
+      }
+    });
+  }
+</script>
+{% endblock %}

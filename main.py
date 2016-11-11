@@ -23,6 +23,11 @@ methods = [
         "id": 4,
         "name": "vigenere",
         "description": "Mat ma vigenere"
+    },
+    {
+        "id": 5,
+        "name": "power",
+        "description": "Tính số mũ lớn"
     }
 ]
 @app.errorhandler(404)
@@ -172,6 +177,22 @@ def decrypt(method_id):
                     'plain_text': vi._decrypt()
                 }
                 return jsonify({'result': result})
+        elif method_id == 5:
+            if not 'number' in request.json or not 'powerNumber' in request.json or not 'moduloNumber' in request.json:
+                abort(400)
+            else:
+                from ciphers import power
+                p = power.PowerCalculate(number=request.json['number'],
+                                         powerNumber=request.json['powerNumber'],
+                                         moduloNumber=request.json['moduloNumber'])
+                result = {
+                    'method': method[0]['name'],
+                    'number': request.json['number'],
+                    'powerNumber': request.json['powerNumber'],
+                    'moduloNumber': request.json['moduloNumber'],
+                    'result': p._calculate()
+                }
+                return jsonify({'result': result})
 
 @app.route("/")
 def index():
@@ -189,5 +210,8 @@ def caesar():
 @app.route("/vigenere")
 def vigenere():
     return render_template("vigenere.html")
+@app.route("/pow")
+def power():
+    return render_template("pow.html")
 if __name__ == '__main__':
     app.run(debug=True)
